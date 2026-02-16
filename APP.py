@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # app.py - Omni-Med Vault (Voice + Diagnosis Only)
 from logic import get_diagnosis, get_sub_options, get_all_main_symptoms, get_ai_diagnosis, detect_emergency
 import streamlit as st
@@ -293,7 +292,7 @@ with st.expander("💡 AI Health Tip"):
 # ---------------------------
 if st.session_state.patient is not None:
     show_emergency(c, conn, st.session_state.patient["id"])
-=======
+
 # app.py - Omni-Med Vault (Voice + Diagnosis Only)
 from logic import get_diagnosis, get_sub_options, get_all_main_symptoms, get_ai_diagnosis, detect_emergency
 import streamlit as st
@@ -588,4 +587,3 @@ with st.expander("💡 AI Health Tip"):
 # ---------------------------
 if st.session_state.patient is not None:
     show_emergency(c, conn, st.session_state.patient["id"])
->>>>>>> 242a03e685cbf14a68c3339e51e6a4ad30fa54c7
