@@ -328,7 +328,7 @@ def set_background(image_path):
         """,
         unsafe_allow_html=True
     )
-set_background(r"C:\Users\HP\Downloads\WhatsApp Image 2026-01-29 at 6.12.39 PM.jpeg")
+set_background("background.jpeg")
 
 st.title("💊 Asquare Med's")
 st.subheader("Your AI-Powered Home Clinic")
