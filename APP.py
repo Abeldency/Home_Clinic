@@ -305,7 +305,7 @@ from datetime import date
 
 from emergency import show_emergency
 from streamlit_mic_recorder import mic_recorder
-from voice import recognize_audio
+#from voice import recognize_audio
 
 # Page Config
 st.set_page_config(page_title="💊 Asquare Med's", page_icon="💊")
