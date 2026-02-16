@@ -10,7 +10,7 @@ from datetime import date
 
 from emergency import show_emergency
 from streamlit_mic_recorder import mic_recorder
-from voice import recognize_audio
+#from voice import recognize_audio
 
 # Page Config
 st.set_page_config(page_title="💊 Asquare Med's", page_icon="💊")
@@ -145,34 +145,34 @@ if st.session_state.patient is not None:
             tmp.write(audio["bytes"])
             audio_path = tmp.name
 
-        spoken_text = recognize_audio(audio_path)
-        os.remove(audio_path)
+        #spoken_text = recognize_audio(audio_path)
+        #os.remove(audio_path)
 
-        if spoken_text:
-            st.write(f"🗣 You said: **{spoken_text}**")
+        #if spoken_text:
+            #st.write(f"🗣 You said: **{spoken_text}**")
 
-            is_emergency, keyword = detect_emergency(spoken_text)
-            if is_emergency:
-                st.error("🚨 EMERGENCY DETECTED!")
-                st.error(f"Issue: {keyword.upper()}")
-                show_emergency(c, conn, st.session_state.patient["id"])
-                st.stop()
+            #is_emergency, keyword = detect_emergency(spoken_text)
+            #if is_emergency:
+                #st.error("🚨 EMERGENCY DETECTED!")
+                #st.error(f"Issue: {keyword.upper()}")
+                #show_emergency(c, conn, st.session_state.patient["id"])
+                #st.stop()
 
-            speech_symptom_map = {
-                "cough": "Cough",
-                "fever": "Fever",
-                "headache": "Headache",
-                "pain": "Pain",
-                "cold": "Cough",
-                "temperature": "Fever",
-                "breath": "Breathing Difficulty",
-            }
+            #speech_symptom_map = {
+                #"cough": "Cough",
+                #"fever": "Fever",
+                #"headache": "Headache",
+                #"pain": "Pain",
+                #"cold": "Cough",
+                #"temperature": "Fever",
+                #"breath": "Breathing Difficulty",
+            #}
 
-            for key, value in speech_symptom_map.items():
-                if key in spoken_text.lower():
-                    st.session_state.speech_symptom = value
-                    st.success(f"Detected symptom from speech: **{value}**")
-                    break
+            #for key, value in speech_symptom_map.items():
+                #if key in spoken_text.lower():
+                    #st.session_state.speech_symptom = value
+                    #st.success(f"Detected symptom from speech: **{value}**")
+                    #break
 
     # ---------------------------
     # Symptom Selection
