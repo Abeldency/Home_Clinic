@@ -3,3 +3,7 @@ __pycache__/
 *.db
 *.pkl
 advanced_patient_dataset.csv
+
+!medical_model.pkl
+!scaler.pkl
+!encoder.pkl
