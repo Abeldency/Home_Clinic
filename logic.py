@@ -6,27 +6,40 @@ import numpy as np
 import os
 
 # ==================================================
-# 🧠 AI MODEL LOADING (SAFE)
+# 🧠 AI MODEL LOADING (DEPLOYMENT SAFE)
 # ==================================================
+
 MODEL_AVAILABLE = False
 
 try:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    model_path = os.path.join(BASE_DIR, "medical_model.pkl")
+    scaler_path = os.path.join(BASE_DIR, "scaler.pkl")
+    encoder_path = os.path.join(BASE_DIR, "encoder.pkl")
+
     if (
-        os.path.exists("medical_model.pkl")
-        and os.path.exists("scaler.pkl")
-        and os.path.exists("encoder.pkl")
+        os.path.exists(model_path)
+        and os.path.exists(scaler_path)
+        and os.path.exists(encoder_path)
     ):
-        model = joblib.load("medical_model.pkl")
-        scaler = joblib.load("scaler.pkl")
-        encoder = joblib.load("encoder.pkl")
+        model = joblib.load(model_path)
+        scaler = joblib.load(scaler_path)
+        encoder = joblib.load(encoder_path)
         MODEL_AVAILABLE = True
+        print("✅ AI Model Loaded Successfully")
+    else:
+        print("⚠ AI model files not found.")
+
 except Exception as e:
     MODEL_AVAILABLE = False
+    print("❌ Error loading AI model:", e)
 
 
 # ==================================================
 # 📚 RULE-BASED DIAGNOSIS TREE
 # ==================================================
+
 DIAGNOSIS_TREE = {
     "Cough": {
         "Dry": {"Medicine": "Dextromethorphan (Suppressant)", "Dosage": "10ml every 6-8 hours", "Bin": 7},
@@ -72,6 +85,7 @@ DIAGNOSIS_TREE = {
 # ==================================================
 # 🚨 EMERGENCY DETECTION
 # ==================================================
+
 EMERGENCY_KEYWORDS = [
     "chest pain",
     "breathing difficulty",
@@ -91,8 +105,9 @@ def detect_emergency(text):
 
 
 # ==================================================
-# 💊 RULE-BASED DIAGNOSIS (USED BY APP)
+# 💊 RULE-BASED DIAGNOSIS
 # ==================================================
+
 def get_diagnosis(main_symptom, sub_symptom):
     category = DIAGNOSIS_TREE.get(main_symptom)
     if not category:
@@ -109,8 +124,9 @@ def get_all_main_symptoms():
 
 
 # ==================================================
-# 🤖 AI-BASED DIAGNOSIS (NEW – OPTIONAL)
+# 🤖 AI-BASED DIAGNOSIS
 # ==================================================
+
 def get_ai_diagnosis(input_data):
     """
     input_data format:
@@ -120,15 +136,19 @@ def get_ai_diagnosis(input_data):
     if not MODEL_AVAILABLE:
         return "AI model not available"
 
-    column_names = [
-        "Age", "Gender", "Temp", "HR",
-        "Sys", "SpO2", "WBC", "CRP", "Hb"
-    ]
+    try:
+        column_names = [
+            "Age", "Gender", "Temp", "HR",
+            "Sys", "SpO2", "WBC", "CRP", "Hb"
+        ]
 
-    df_input = pd.DataFrame([input_data], columns=column_names)
+        df_input = pd.DataFrame([input_data], columns=column_names)
 
-    scaled_data = scaler.transform(df_input)
-    prediction_numeric = model.predict(scaled_data)
-    prediction_text = encoder.inverse_transform(prediction_numeric)[0]
+        scaled_data = scaler.transform(df_input)
+        prediction_numeric = model.predict(scaled_data)
+        prediction_text = encoder.inverse_transform(prediction_numeric)[0]
 
-    return prediction_text
+        return prediction_text
+
+    except Exception as e:
+        return f"AI prediction error: {str(e)}"
